@@ -1,0 +1,17 @@
+<!-- 예시로 작성해놓은 코드입니다 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>SQL Injection using Spring</h1>
+    <form th:action="@{/}" th:object="${userForm}" method="post">
+      <div>
+        <input type="text" placeholder="Try to attack here.." th:field="*{id}">
+      </div>
+      <button type="submit">입력</button>
+    </form>
+</body>
+</html>
