@@ -10,8 +10,8 @@ import sqlinjectionspring.user.UserForm;
 public class MainController {
 
     @GetMapping("/")
-    public String redirect() {
-        return "redirect:/signup";
+    public String index() {
+        return "index";
     }
 
     @GetMapping("/signup")

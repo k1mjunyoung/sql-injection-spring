@@ -7,11 +7,12 @@
 </head>
 <body>
     <h1>SQL Injection using Spring</h1>
-    <form th:action="@{/}" th:object="${userForm}" method="post">
-      <div>
-        <input type="text" placeholder="Try to attack here.." th:field="*{id}">
-      </div>
-      <button type="submit">입력</button>
+    <form method="post">
+        <input type="text" placeholder="Try to attack here..">
+        <button type="submit">입력</button>
     </form>
+    <div style="height: 300px; border: 1px solid black">Result...</div>
+    <a th:href="@{/signup}">회원가입</a>
+    <a th:href="@{/login}">로그인</a>
 </body>
 </html>
