@@ -8,8 +8,14 @@
 <body>
     <h1>SQL Injection using Spring</h1>
     <form method="post">
+      <div sec:authorize="isAuthenticated()">
         <input type="text" placeholder="Try to attack here..">
-        <button type="submit">입력</button>
+        <button type="submit" >입력</button>
+      </div>
+      <div>
+        <input type="text" placeholder="Please Log-in">
+        <button disabled type="submit">입력</button>
+      </div>
     </form>
     <div style="height: 300px; border: 1px solid black">Result...</div>
     <a th:href="@{/signup}">회원가입</a>
