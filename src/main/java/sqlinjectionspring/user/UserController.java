@@ -17,8 +17,6 @@ public class UserController {
 
     private final UserService userService;
 
-
-
     @PostMapping("/signup")
     public String signup(@Valid UserForm userForm, BindingResult bindingResult) {
 
@@ -45,6 +43,6 @@ public class UserController {
             return "auth/signup";
         }
 
-        return "redirect:/api";
+        return "redirect:/";
     }
 }

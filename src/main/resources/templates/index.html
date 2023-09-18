@@ -7,18 +7,20 @@
 </head>
 <body>
     <h1>SQL Injection using Spring</h1>
-    <form method="post">
-      <div sec:authorize="isAuthenticated()">
-        <input type="text" placeholder="Try to attack here..">
-        <button type="submit" >입력</button>
-      </div>
-      <div>
-        <input type="text" placeholder="Please Log-in">
-        <button disabled type="submit">입력</button>
-      </div>
+    <form th:action="@{/attack}" th:object="${attackForm}" method="post">
+<!--      <div sec:authorize="isAuthenticated()">-->
+<!--        <input type="text" placeholder="Try to attack here..">-->
+<!--        <button type="submit" >입력</button>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <input type="text" placeholder="Please Log-in">-->
+<!--        <button disabled type="submit">입력</button>-->
+<!--      </div>-->
+        <input type="text" th:field="*{param}" placeholder="Try to attack here..">
+        <button type="submit">입력</button>
     </form>
-    <div style="height: 300px; border: 1px solid black">Result...</div>
+    <div th:if="${result} != null" th:text="${result}" style="height: 300px; border: 1px solid black"></div>
+    <div th:unless="${result} != null" style="height: 300px; border: 1px solid black">Result...</div>
     <a th:href="@{/signup}">회원가입</a>
-    <a th:href="@{/login}">로그인</a>
 </body>
 </html>

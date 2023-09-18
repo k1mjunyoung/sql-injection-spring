@@ -3,11 +3,17 @@ package sqlinjectionspring.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+
+    public List<User> getList() {
+        return this.userRepository.findAll();
+    }
 
     public User create(String id, String password, String name, String email) {
         User user = new User();
