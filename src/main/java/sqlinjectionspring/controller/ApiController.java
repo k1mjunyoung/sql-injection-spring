@@ -1,17 +1,19 @@
 package sqlinjectionspring.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import sqlinjectionspring.service.ApiService;
-import sqlinjectionspring.user.User;
-import sqlinjectionspring.user.UserService;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import sqlinjectionspring.entity.User;
+import sqlinjectionspring.form.AttackForm;
+import sqlinjectionspring.service.MainService;
+import sqlinjectionspring.service.UserService;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,24 +24,49 @@ import java.util.Map;
 @RequestMapping("/api")
 public class ApiController {
 
-    private final ApiService apiService;
     private final UserService userService;
 
-    @Operation(summary = "get apis", description = "해시맵 가져오기")
-    @GetMapping
-    public Map<String, Object> test() {
+    private String wholeQuery;
+    private String Query;
+    private List<Object> result;
 
-        return apiService.getData();
+    @GetMapping("/user")
+    public List<Object> test() {
 
+        List<Object> user = this.userService.getUsers("'test01' or id is not NULL");
+
+        return user;
     }
 
-    @GetMapping("/users")
-    public Map<String, Object> users() {
+    @PostMapping("/attack")
+    public String attack(@RequestBody String param, @Valid AttackForm attackForm, BindingResult bindingResult) {
 
-        Map<String, Object> map = new HashMap<>();
+        param = attackForm.getParam();
+        this.wholeQuery = "select * from user where id= '" + param + "' ";
 
-        map.put(userService.getList().get(0).getId(), userService.getList().get(0));
+        result = this.userService.getUsers(param);
 
-        return map;
+        return "redirect:/result";
+    }
+
+    @GetMapping("/result")
+    public String result(Model model, @Valid AttackForm attackForm, BindingResult bindingResult) throws JsonProcessingException {
+
+        attackForm.setParam("where am i");
+
+        String resultJson = toJson(result);
+
+        model.addAttribute("wholeQuery", wholeQuery);
+        model.addAttribute("result", resultJson);
+
+        return "index";
+    }
+
+    public String toJson(Object object) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(object);
+
+        return json;
     }
 }

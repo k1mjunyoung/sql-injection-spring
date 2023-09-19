@@ -1,26 +1,30 @@
 <!-- 예시로 작성해놓은 코드입니다 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Title</title>
+    <style>
+        .container {
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
     <h1>SQL Injection using Spring</h1>
-    <form th:action="@{/attack}" th:object="${attackForm}" method="post">
-<!--      <div sec:authorize="isAuthenticated()">-->
-<!--        <input type="text" placeholder="Try to attack here..">-->
-<!--        <button type="submit" >입력</button>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <input type="text" placeholder="Please Log-in">-->
-<!--        <button disabled type="submit">입력</button>-->
-<!--      </div>-->
+    <form th:action="@{/api/attack}" th:object="${attackForm}" method="post">
+        <span>select * from user where id = </span>
         <input type="text" th:field="*{param}" placeholder="Try to attack here..">
         <button type="submit">입력</button>
     </form>
-    <div th:if="${result} != null" th:text="${result}" style="height: 300px; border: 1px solid black"></div>
-    <div th:unless="${result} != null" style="height: 300px; border: 1px solid black">Result...</div>
-    <a th:href="@{/signup}">회원가입</a>
+    <p>Result</p>
+    <div style="border: 1px solid black">
+        <p th:text="${result}" style="word-wrap: break-word"></p>
+    </div>
+    <a th:href="@{/signup}">Add User Data</a>
+</div>
 </body>
 </html>

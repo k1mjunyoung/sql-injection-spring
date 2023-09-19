@@ -1,8 +1,9 @@
-package sqlinjectionspring.user;
+package sqlinjectionspring.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import sqlinjectionspring.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findById(String id);
 
-    @Query(value = "select * from user", nativeQuery = true)
     List<User> findAll();
+
+    @Query(value = "select * from user as u where u.id = ?", nativeQuery = true)
+    List<User> findAllQuery();
 
 }

@@ -1,4 +1,4 @@
-package sqlinjectionspring.user;
+package sqlinjectionspring.entity;
 
 import lombok.Builder;
 import lombok.Getter;

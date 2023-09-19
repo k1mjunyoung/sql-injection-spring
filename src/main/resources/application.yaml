@@ -17,6 +17,9 @@ spring:
     init:
       encoding: UTF-8
 
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
 springdoc:
   packages-to-scan: sqlinjectionspring.controller
   default-consumes-media-type: application/json;charset=UTF-8

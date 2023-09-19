@@ -1,21 +1,25 @@
-package sqlinjectionspring.user;
+package sqlinjectionspring.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import sqlinjectionspring.form.UserForm;
+import sqlinjectionspring.service.UserService;
 
 import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/signup")
+    public String signup(UserForm userForm) {
+        return "auth/signup";
+    }
 
     @PostMapping("/signup")
     public String signup(@Valid UserForm userForm, BindingResult bindingResult) {
