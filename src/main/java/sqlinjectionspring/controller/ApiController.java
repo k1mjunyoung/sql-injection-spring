@@ -5,6 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +17,10 @@ import sqlinjectionspring.form.AttackForm;
 import sqlinjectionspring.service.MainService;
 import sqlinjectionspring.service.UserService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,34 +46,31 @@ public class ApiController {
     }
 
     @PostMapping("/attack")
-    public String attack(@RequestBody String param, @Valid AttackForm attackForm, BindingResult bindingResult) {
+    public ResponseEntity<?> attack(@RequestParam("param") String param) {
 
-        param = attackForm.getParam();
         this.wholeQuery = "select * from user where id= '" + param + "' ";
 
-        result = this.userService.getUsers(param);
+        try {
+            result = this.userService.getUsers(param);
+        }
+        catch (BadSqlGrammarException e) {
+            return new ResponseEntity<>("Bad SQL Grammer.", HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Unknown Exception.", HttpStatus.BAD_REQUEST);
+        }
 
-        return "redirect:/result";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/result"));
+
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     @GetMapping("/result")
-    public String result(Model model, @Valid AttackForm attackForm, BindingResult bindingResult) throws JsonProcessingException {
+    public List<Object> result() throws JsonProcessingException {
 
-        attackForm.setParam("where am i");
+        // String resultJson = toJson(result);
 
-        String resultJson = toJson(result);
-
-        model.addAttribute("wholeQuery", wholeQuery);
-        model.addAttribute("result", resultJson);
-
-        return "index";
-    }
-
-    public String toJson(Object object) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String json = objectMapper.writeValueAsString(object);
-
-        return json;
+        return result;
     }
 }

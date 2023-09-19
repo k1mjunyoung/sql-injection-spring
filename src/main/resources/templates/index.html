@@ -15,10 +15,14 @@
 <body>
 <div class="container">
     <h1>SQL Injection using Spring</h1>
-    <form th:action="@{/api/attack}" th:object="${attackForm}" method="post">
+    <form th:action="@{/attack}" th:object="${attackForm}" method="post">
         <span>select * from user where id = </span>
         <input type="text" th:field="*{param}" placeholder="Try to attack here..">
         <button type="submit">입력</button>
+    </form>
+    <form th:action="@{/api/attack}" method="post">
+        <input type="text" name="param" placeholder="Try to attack here..">
+        <button type="submit">입력(API로 받기)</button>
     </form>
     <p>Result</p>
     <div style="border: 1px solid black">
