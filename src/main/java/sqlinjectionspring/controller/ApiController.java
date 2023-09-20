@@ -1,20 +1,16 @@
 package sqlinjectionspring.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.web.bind.annotation.*;
 import sqlinjectionspring.service.UserService;
 
-import java.net.URI;
 import java.util.List;
 
 @Tag(name = "API", description = "API 명세")
@@ -24,7 +20,6 @@ import java.util.List;
 public class ApiController {
 
     private final UserService userService;
-    private List<Object> result;
 
     @Operation(summary = "테스트 API", description = "백엔드 테스트용 API로 무시하셔도 됩니다.")
     @GetMapping("/test")
@@ -46,22 +41,18 @@ public class ApiController {
 
         // String wholeQuery = new String("select * from user where id= '" + param + "' ");
 
+        List<Object> result;
+
         try {
             result = this.userService.getUsers(param);
         }
         catch (BadSqlGrammarException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
         catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
 
         return ResponseEntity.ok().body(result);
-    }
-
-    @Operation(summary = "결과 APi", description = "객체 리스트가 반환됩니다.")
-    @GetMapping("/result")
-    public List<Object> result() throws JsonProcessingException {
-        return result;
     }
 }
