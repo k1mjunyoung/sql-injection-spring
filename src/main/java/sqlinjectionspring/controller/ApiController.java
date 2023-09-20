@@ -42,7 +42,7 @@ public class ApiController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @PostMapping("/attack")
-    public ResponseEntity<?> attack(@RequestParam("param") String param) {
+    public ResponseEntity attack(@RequestParam("param") String param) {
 
         // String wholeQuery = new String("select * from user where id= '" + param + "' ");
 
@@ -56,10 +56,7 @@ public class ApiController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/api/result"));
-
-        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        return ResponseEntity.ok().body(result);
     }
 
     @Operation(summary = "결과 APi", description = "객체 리스트가 반환됩니다.")
