@@ -1,34 +1,52 @@
 <!-- 예시로 작성해놓은 코드입니다 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>SQL Injection</title>
     <style>
-        .container {
-            font-size: 1.1rem;
-        }
+      .container {
+        font-size: 1.1rem;
+      }
     </style>
-</head>
-<body>
-<div class="container">
-    <h1>SQL Injection</h1>
-    <form th:action="@{/attack}" th:object="${attackForm}" method="post">
+  </head>
+  <body>
+    <div class="container">
+      <h1>SQL Injection</h1>
+      <form th:action="@{/api/attack}" method="post">
         <span>select * from user where id = </span>
-        <input type="text" th:field="*{param}" placeholder="Try to attack here..">
-        <button type="submit">입력</button>
-    </form>
-    <form th:action="@{/api/attack}" method="post">
-        <input type="text" name="param" placeholder="Try to attack here..">
-        <button type="submit">입력(API로 받기)</button>
-    </form>
-    <p>Result</p>
-    <div style="border: 1px solid black">
-        <p th:text="${result}" style="word-wrap: break-word"></p>
+        <input
+          id="apiParam"
+          type="text"
+          name="param"
+          placeholder="Try to attack here.."
+        />
+        <button type="submit" onclick="callApi()">입력(API로 받기)</button>
+      </form>
+      <p>Result</p>
+      <div style="border: 1px solid black">
+        <p id="result" th:text="${result}" style="word-wrap: break-word"></p>
+      </div>
+      <a th:href="@{/signup}">Add User Data</a>
     </div>
-    <a th:href="@{/signup}">Add User Data</a>
-</div>
-</body>
+    <script>
+      async function callApi() {
+        const paramValue = document.getElementById("apiParam").value;
+        const resultParagraph = document.getElementById("result");
+        const formData = new FormData();
+        formData.append("param", paramValue);
+        const response = await fetch("/api/attack", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        resultParagraph.innerText = data;
+      }
+    </script>
+  </body>
 </html>
