@@ -10,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import sqlinjectionspring.form.AttackForm;
-import sqlinjectionspring.service.MainService;
-import sqlinjectionspring.entity.User;
 import sqlinjectionspring.service.UserService;
 
 import javax.validation.Valid;
@@ -21,10 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final MainService mainService;
     private final UserService userService;
     private String wholeQuery;
-    private String Query;
     private List<Object> result;
 
     @GetMapping("/")

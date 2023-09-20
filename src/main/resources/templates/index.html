@@ -1,11 +1,11 @@
 <!-- 예시로 작성해놓은 코드입니다 -->
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Title</title>
+    <title>SQL Injection</title>
     <style>
         .container {
             font-size: 1.1rem;
@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>SQL Injection using Spring</h1>
+    <h1>SQL Injection</h1>
     <form th:action="@{/attack}" th:object="${attackForm}" method="post">
         <span>select * from user where id = </span>
         <input type="text" th:field="*{param}" placeholder="Try to attack here..">

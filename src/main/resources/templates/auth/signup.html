@@ -2,36 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SQL Injection</title>
+    <style>
+        .container {
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <h4>회원가입</h4>
+<div class="container">
+    <h1>Add User Data</h1>
     <form th:action="@{/signup}" th:object="${userForm}" method="post">
+
+        <!-- Error Message -->
         <div role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
         </div>
-        <div >
+        <!-- Error Message -->
+
+        <div>
             <label for="id">ID</label>
             <input type="text" th:field="*{id}">
         </div>
         <div>
-            <label for="name">이름</label>
+            <label for="name">Name</label>
             <input type="text" th:field="*{name}">
         </div>
-        <div
-            <label for="password">비밀번호</label>
+        <div>
+            <label for="password">Password</label>
             <input type="password" th:field="*{password}">
         </div>
         <div>
-            <label for="password2">비밀번호 확인</label>
+            <label for="password2">Confirm Password</label>
             <input type="password" th:field="*{password2}">
         </div>
         <div>
-            <label for="email">이메일</label>
+            <label for="email">Email</label>
             <input type="email" th:field="*{email}">
         </div>
-        <button type="submit">회원가입</button>
+        <button type="submit">Submit</button>
     </form>
 </div>
 </body>

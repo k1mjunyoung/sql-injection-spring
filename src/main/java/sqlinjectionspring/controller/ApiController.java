@@ -1,43 +1,33 @@
 package sqlinjectionspring.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.BadSqlGrammarException;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sqlinjectionspring.entity.User;
-import sqlinjectionspring.form.AttackForm;
-import sqlinjectionspring.service.MainService;
 import sqlinjectionspring.service.UserService;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@Tag(name = "test", description = "테스트 API")
+@Tag(name = "API", description = "API 명세")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ApiController {
 
     private final UserService userService;
-
-    private String wholeQuery;
-    private String Query;
     private List<Object> result;
 
-    @GetMapping("/user")
+    @Operation(summary = "테스트 API", description = "백엔드 테스트용 API로 무시하셔도 됩니다.")
+    @GetMapping("/test")
     public List<Object> test() {
 
         List<Object> user = this.userService.getUsers("'test01' or id is not NULL");
@@ -45,19 +35,25 @@ public class ApiController {
         return user;
     }
 
+    @Operation(summary = "공격 API")
+    @Parameter(name = "param", description = "인젝션 공격에 사용될 문자열")
+    @ApiResponses(value =  {
+            @ApiResponse(responseCode = "400", description = "SQL 문법 오류"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
     @PostMapping("/attack")
     public ResponseEntity<?> attack(@RequestParam("param") String param) {
 
-        this.wholeQuery = "select * from user where id= '" + param + "' ";
+        // String wholeQuery = new String("select * from user where id= '" + param + "' ");
 
         try {
             result = this.userService.getUsers(param);
         }
         catch (BadSqlGrammarException e) {
-            return new ResponseEntity<>("Bad SQL Grammer.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
-            return new ResponseEntity<>("Unknown Exception.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -66,11 +62,9 @@ public class ApiController {
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
+    @Operation(summary = "결과 APi", description = "객체 리스트가 반환됩니다.")
     @GetMapping("/result")
     public List<Object> result() throws JsonProcessingException {
-
-        // String resultJson = toJson(result);
-
         return result;
     }
 }
