@@ -18,7 +18,7 @@
   <body>
     <div class="container">
       <h1>SQL Injection</h1>
-      <form th:action="@{/api/attack}" method="post">
+      <form id="submitForm">
         <span>select * from user where id = </span>
         <input
           id="apiParam"
@@ -26,7 +26,7 @@
           name="param"
           placeholder="Try to attack here.."
         />
-        <button type="submit" onclick="callApi()">입력(API로 받기)</button>
+        <button type="submit">입력(API로 받기)</button>
       </form>
       <p>Result</p>
       <div style="border: 1px solid black">
@@ -35,18 +35,26 @@
       <a th:href="@{/signup}">Add User Data</a>
     </div>
     <script>
-      async function callApi() {
-        const paramValue = document.getElementById("apiParam").value;
-        const resultParagraph = document.getElementById("result");
-        const formData = new FormData();
-        formData.append("param", paramValue);
-        const response = await fetch("/api/attack", {
-          method: "POST",
-          body: formData,
+      document
+        .getElementById("submitForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const paramValue = document.getElementById("apiParam").value;
+          const resultParagraph = document.getElementById("result");
+          const formData = new FormData();
+          formData.append("param", paramValue);
+          const response = await fetch("/api/attack", {
+            method: "POST",
+            body: formData,
+          });
+          const datas = await response.json();
+          if (datas) {
+            datas.forEach((data) => {
+              console.log(data);
+              resultParagraph.innerText += JSON.stringify(data) + "\n";
+            });
+          }
         });
-        const data = await response.json();
-        resultParagraph.innerText = data;
-      }
     </script>
   </body>
 </html>
