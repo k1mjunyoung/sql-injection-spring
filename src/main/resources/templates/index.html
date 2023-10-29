@@ -9,31 +9,123 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <title>SQL Injection</title>
-    <style>
-      .container {
-        font-size: 1.1rem;
-      }
-    </style>
+    <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>SQL Injection</h1>
-      <form id="submitForm">
-        <span>select * from user where id = </span>
-        <input
-          id="apiParam"
-          type="text"
-          name="param"
-          placeholder="Try to attack here.."
-        />
-        <button type="submit">입력(API로 받기)</button>
-      </form>
-      <p>Result</p>
-      <div style="border: 1px solid black">
-        <p id="result" th:text="${result}" style="word-wrap: break-word"></p>
+    <div class="title-container">
+      <h1 class="title">SQL Injection</h1>
+      <div class="logo-container">
+        <div class="logo-outline">
+          <div class="logo-container-child"></div>
+          <div class="logo-container-child">
+            <image class="logo-img" src="../../../asset/image 1.svg" />
+          </div>
+        </div>
       </div>
-      <a th:href="@{/signup}">Add User Data</a>
     </div>
+    <div class="main">
+      <div class="form-container">
+        <span class="form-text">SELECT * FROM user WHERE ID = </span>
+        <form id="submitForm">
+          <input
+            class="input-form"
+            id="apiParam"
+            type="text"
+            name="param"
+            placeholder="Try to attack here.."
+          />
+          <button class="form-btn" type="submit">공격</button>
+          <span class="add-btn">
+            <a th:href="@{/signup}">데이터 추가</a>
+          </span>
+        </form>
+      </div>
+      <div class="result-container">
+        <div class="result-text">
+          <p>결과</p>
+        </div>
+        <div class="result-box">
+          <p id="result" th:text="${result}" style="word-wrap: break-word"></p>
+        </div>
+      </div>
+      <div class="result-content">
+        <div class="content-list">
+          <h2>SQL Injection이란?</h2>
+          <p>
+            SQL 인젝션(SQL Injection)은 웹 애플리케이션에서 가장 흔한 보안
+            취약점 중 하나로, 악의적인 사용자가 웹 애플리케이션의 입력 필드에
+            악의적인 SQL 쿼리를 삽입하여 데이터베이스를 공격하는 기술을
+            가리킵니다.<br />
+            SQL 인젝션은 데이터베이스와 상호작용하는 웹 애플리케이션에서
+            발생하며, 공격자는 데이터베이스에 민감한 정보를 빼내거나 수정할 수
+            있습니다.
+          </p>
+        </div>
+        <div class="content-list">
+          <h2>SQL Injection 종류와 사례</h2>
+          <div class="result-list-box">
+            <span>Classic SQL Injection (Blind SQL Injection)</span>
+            <li class="result-list">
+              사용자가 로그인 폼에 입력한 사용자 이름과 비밀번호를 검증하지
+              않고, 공격자가 입력 필드에 악의적인 SQL 쿼리를 삽입하여 로그인
+              정보를 유출
+            </li>
+          </div>
+          <div class="result-list-box">
+            <span>Time-Based Blind SQL Injection</span>
+            <li class="result-list">
+              사례: 공격자가 데이터베이스에 대한 질문에 대한 응답 시간을
+              기반으로 결과를 확인하여 민감한 정보를 추출
+            </li>
+          </div>
+          <div class="result-list-box">
+            <span>Union-Based SQL Injection</span>
+            <li class="result-list">
+              사례: 공격자가 UNION 연산자를 사용하여 데이터베이스에서 다른
+              테이블의 정보를 추출
+            </li>
+          </div>
+          <div class="result-list-box">
+            <span>Mass SQL Injection</span>
+            <li class="result-list">
+              사례: 한 번의 공격으로 많은 양의 DB 값을 변조시켜 웹 사이트에
+              치명적인 영향을 미침
+            </li>
+          </div>
+          <div class="result-list-box">
+            <span>Stored Procedure SQL Injection</span>
+            <li class="result-list">
+              사례: 일련의 쿼리를 마치 하나의 함수처럼 실행하기 위한 쿼리의
+              집합으로, SQL Injection의 취약점으로 인해 웹상에서 Stored
+              Procedure에 대한 접근권한을 가져서 실행
+            </li>
+          </div>
+        </div>
+        <div class="content-list">
+          <h2>대응방안</h2>
+          <li class="solution-list">
+            사용자 입력을 검증하고, SQL 쿼리를 파라미터화하여 쿼리 문자열을
+            안전하게 처리
+          </li>
+          <li class="solution-list">
+            공격적인 연산자를 필터링하거나 안전한 방식으로 처리
+          </li>
+          <li class="solution-list">
+            웹 애플리케이션 개발에는 보안 라이브러리 및 프레임워크를 활용하고,
+            보안 업데이트를 적시에 적용
+          </li>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div>
+        <img src="../../../asset/logo.svg" />
+      </div>
+      <div class="info">
+        <span class="major">SW융합대학 정보보호학과</span>
+        <span>김준영 신건우 박해준 김세준 최선빈</span>
+      </div>
+    </footer>
     <script>
       document
         .getElementById("submitForm")
@@ -41,6 +133,7 @@
           e.preventDefault();
           const paramValue = document.getElementById("apiParam").value;
           const resultParagraph = document.getElementById("result");
+          resultParagraph.innerText = "";
           const formData = new FormData();
           formData.append("param", paramValue);
           const response = await fetch("/api/attack", {
