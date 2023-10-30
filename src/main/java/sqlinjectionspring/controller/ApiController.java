@@ -46,13 +46,9 @@ public class ApiController {
 
         try {
             result = this.userService.getUsers(param);
-
-            if (result.isEmpty()) {
-                return ResponseEntity.ok().body("조회된 데이터가 없습니다.");
-            }
         }
         catch (BadSqlGrammarException e) {
-            return ResponseEntity.badRequest().body("잘못된 SQL 문법입니다.");
+            return ResponseEntity.badRequest().build();
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
