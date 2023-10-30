@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.web.bind.annotation.*;
+import sqlinjectionspring.entity.User;
 import sqlinjectionspring.service.UserService;
 
 import java.util.List;
@@ -23,9 +24,9 @@ public class ApiController {
 
     @Operation(summary = "테스트 API", description = "백엔드 테스트용 API로 무시하셔도 됩니다.")
     @GetMapping("/test")
-    public List<Object> test() {
+    public List<User> test() {
 
-        List<Object> user = this.userService.getUsers("'test01' or id is not NULL");
+        List<User> user = this.userService.getUsers("'test01' or id is not NULL");
 
         return user;
     }
@@ -41,13 +42,17 @@ public class ApiController {
 
         // String wholeQuery = new String("select * from user where id= '" + param + "' ");
 
-        List<Object> result;
+        List<User> result;
 
         try {
             result = this.userService.getUsers(param);
+
+            if (result.isEmpty()) {
+                return ResponseEntity.ok().body("조회된 데이터가 없습니다.");
+            }
         }
         catch (BadSqlGrammarException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("잘못된 SQL 문법입니다.");
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
