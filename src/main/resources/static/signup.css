@@ -1,0 +1,100 @@
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+.title-container {
+  padding-top: 10px;
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  color: #26539c;
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  margin: 0;
+}
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.logo-outline {
+  width: 500px;
+  display: flex;
+  justify-content: center;
+}
+.logo-container-child {
+  flex: 1;
+}
+.logo-img {
+  width: 200px;
+}
+.container {
+  font-size: 1.1rem;
+}
+.main {
+  margin-top: 100px;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main-title {
+  font-size: 16px;
+}
+.fleid-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px; /* 필요에 따라 여백 조정 */
+}
+
+.field-label {
+  margin-bottom: 5px; /* 레이블과 입력 필드 사이의 간격 조정 */
+  font-size: 14px;
+}
+.field-input {
+  height: 20px;
+}
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.form-box {
+  width: 100%;
+}
+.form-btn {
+  padding: 5px 10px;
+  background-color: #26539c;
+  border: none;
+  border-radius: 2px;
+  color: white;
+  cursor: pointer;
+}
+.footer {
+  width: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  border-top: 1px solid #c1c1c1;
+  justify-content: center;
+  align-items: center;
+}
+.info {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.major {
+  color: #5e5e5e;
+}
