@@ -9,132 +9,12 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <title>SQL Injection</title>
-    <style>
-      body {
-        padding: 0;
-        margin: 0;
-        height: 100vh;
-      }
-      /* title */
-      .title-container {
-        padding-top: 10px;
-        margin: 0;
-        font-size: 36px;
-        font-weight: 700;
-        text-align: center;
-        color: #26539c;
-        display: flex;
-        flex-direction: column;
-      }
-      .title {
-        margin: 0;
-      }
-      .logo-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-      }
-      .logo-outline {
-        width: 500px;
-        display: flex;
-        justify-content: center;
-      }
-      .logo-container-child {
-        flex: 1;
-      }
-      .logo-img {
-        width: 200px;
-      }
-
-      /* main */
-      .main {
-        font-size: 1.1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      .form-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .input-form {
-        width: 520px;
-        height: 20px;
-      }
-      .form-text {
-        margin-right: 4px;
-      }
-      .form-btn {
-        padding: 5px 10px;
-        background-color: #26539c;
-        border: none;
-        border-radius: 2px;
-        color: white;
-        cursor: pointer;
-      }
-      .add-btn {
-        margin-left: 4px;
-        font-size: 14px;
-        background-color: #717171;
-        padding: 4px 10px;
-        color: white;
-        border-radius: 2px;
-        cursor: pointer;
-      }
-      .result-text {
-        display: flex;
-        align-items: center;
-      }
-      .result-container {
-        max-width: 1000px;
-        width: 100%;
-      }
-      .result-box {
-        border: 1px solid black;
-        border-radius: 8px;
-        min-height: 250px;
-      }
-      .content-list {
-        padding-bottom: 20px;
-      }
-      .content-list:last-child {
-        padding-bottom: 150px;
-      }
-      .result-content {
-        max-width: 1000px;
-        width: 100%;
-        font-size: 16px;
-      }
-      .result-list-box {
-        padding: 10px 0;
-      }
-      .result-list {
-        list-style: disc;
-        font-size: 14px;
-      }
-      .solution-list {
-        padding: 5px 0;
-      }
-      /* footer */
-      .footer {
-        padding: 0;
-        margin: 0;
-        display: flex;
-        border-top: 1px solid #c1c1c1;
-        justify-content: center;
-        align-items: center;
-      }
-      .info {
-        margin-left: 20px;
-        display: flex;
-        flex-direction: column;
-      }
-      .major {
-        color: #5e5e5e;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/src/main/resources/static/index.css"
+    />
+    <script src="/src/main/resources/static/index.js" defer></script>
   </head>
   <body>
     <div class="title-container">
@@ -251,28 +131,5 @@
         <span>김준영 신건우 박해준 김세준 최선빈</span>
       </div>
     </footer>
-    <script>
-      document
-        .getElementById("submitForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const paramValue = document.getElementById("apiParam").value;
-          const resultParagraph = document.getElementById("result");
-          resultParagraph.innerText = "";
-          const formData = new FormData();
-          formData.append("param", paramValue);
-          const response = await fetch("/api/attack", {
-            method: "POST",
-            body: formData,
-          });
-          const datas = await response.json();
-          if (datas) {
-            datas.forEach((data) => {
-              console.log(data);
-              resultParagraph.innerText += JSON.stringify(data) + "\n";
-            });
-          }
-        });
-    </script>
   </body>
 </html>
