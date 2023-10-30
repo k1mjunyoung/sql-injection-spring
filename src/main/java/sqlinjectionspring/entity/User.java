@@ -32,7 +32,6 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @Builder.Default
-    private LocalDateTime registrationDateTime = LocalDateTime.now();
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime registrationDateTime;
 }

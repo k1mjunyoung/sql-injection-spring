@@ -6,6 +6,7 @@ import sqlinjectionspring.entity.User;
 import sqlinjectionspring.repository.UserMapper;
 import sqlinjectionspring.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public List<Object> getUsers(String id) {
+    public List<User> getUsers(String id) {
         return userMapper.selectById(id);
     }
 
@@ -30,6 +31,7 @@ public class UserService {
         user.setPassword(password);
         user.setName(name);
         user.setEmail(email);
+        user.setRegistrationDateTime(LocalDateTime.now());
 
         this.userRepository.save(user);
 
